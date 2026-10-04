@@ -1,0 +1,3 @@
+# Pliki, których NIE wysyłamy do budowania obrazu (i które nie trafią do COPY . .)
+.env
+__pycache__/

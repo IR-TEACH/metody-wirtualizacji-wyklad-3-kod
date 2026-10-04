@@ -1,0 +1,4 @@
+body { font-family: system-ui, sans-serif; margin: 24px; color: #1d2733; }
+h1 { color: #0b3a6f; }
+table { border-collapse: collapse; min-width: 320px; }
+th, td { text-align: left; padding: 4px 12px; border-bottom: 1px solid #e3e7ed; }

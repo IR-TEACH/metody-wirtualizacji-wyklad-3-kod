@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend              # własny obraz z Dockerfile
+    ports: ["8000:8000"]          # przeglądarka woła API na :8000
+
+  frontend:
+    build: ./frontend
+    ports: ["8080:80"]            # strona: http://localhost:8080
+
+  sensor:
+    build: ./sensor
+    environment:
+      - BACKEND_URL=http://backend:8000   # nazwa usługi = nazwa w DNS
+    depends_on: [backend]         # start po backendzie
