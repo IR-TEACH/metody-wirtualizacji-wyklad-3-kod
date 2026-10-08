@@ -1,0 +1,6 @@
+# Ustawienia tylko do pracy na własnym komputerze.
+# Compose dokleja ten plik automatycznie do docker-compose.yml.
+services:
+  backend:
+    volumes: ["./backend:/app"]   # bind mount: kod z hosta zamiast kodu z obrazu
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

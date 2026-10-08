@@ -3,14 +3,11 @@ import os
 
 import psycopg
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 DB = os.environ["DATABASE_URL"]  # adres bazy przychodzi z zewnątrz (Compose)
 
-app = FastAPI(title="Stacja pomiarowa")
-# CORS: strona z :8080 może czytać odpowiedzi z :8000
-app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:8080"])
+app = FastAPI(title="Stacja pomiarowa", root_path="/api")  # za proxy pod /api
 
 with psycopg.connect(DB) as conn:  # przy starcie: tabela, jeśli jej jeszcze nie ma
     conn.execute("CREATE TABLE IF NOT EXISTS pomiary (id serial, sala text, temp real)")

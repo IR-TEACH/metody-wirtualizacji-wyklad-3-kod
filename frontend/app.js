@@ -1,5 +1,5 @@
-// JS działa w przeglądarce na hoście, więc woła backend przez port hosta :8000
-const API = `http://${location.hostname}:8000`;
+// ten sam adres co strona: nginx przekazuje /api/ do backendu
+const API = "/api";
 
 async function odswiez() {
   const pomiary = await (await fetch(`${API}/measurements`)).json();
