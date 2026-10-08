@@ -13,3 +13,5 @@ docker compose up -d --build
 Sprzątanie: `docker compose down` (dane zostają) lub `docker compose down -v` (usuwa też dane).
 
 Stan kodu po każdym warsztacie: `git checkout warsztat-1` (2, 3); początek zajęć: `git checkout start`.
+
+CI (`.github/workflows/obrazy.yml`): każdy push na `main` buduje trzy obrazy, skanuje je Trivy (krytyczna podatność z poprawką zatrzymuje pipeline) i wysyła do `ghcr.io/ir-teach/stacja-<usługa>:<SHA>`.
