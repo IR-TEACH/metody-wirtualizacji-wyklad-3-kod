@@ -7,6 +7,10 @@ services:
       - DATABASE_URL=postgresql://stacja:${POSTGRES_PASSWORD}@db:5432/stacja
     depends_on:
       db: { condition: service_healthy }   # czekaj, aż baza będzie GOTOWA
+    restart: unless-stopped       # proces padł: Docker uruchamia kontener ponownie
+    healthcheck:                  # zdrowy = /health odpowiada (python, bo obraz nie ma curl)
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
 
   frontend:
     build: ./frontend
