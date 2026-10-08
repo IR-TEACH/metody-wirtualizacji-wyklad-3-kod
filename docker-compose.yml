@@ -1,14 +1,33 @@
+name: stacja                      # stała nazwa projektu: stacja-backend, stacja_pgdata...
+
 services:
   backend:
-    build: ./backend              # własny obraz z Dockerfile
-    ports: ["8000:8000"]          # przeglądarka woła API na :8000
+    build: ./backend
+    ports: ["8000:8000"]
+    environment:
+      - DATABASE_URL=postgresql://stacja:${POSTGRES_PASSWORD}@db:5432/stacja
+    depends_on:
+      db: { condition: service_healthy }   # czekaj, aż baza będzie GOTOWA
 
   frontend:
     build: ./frontend
-    ports: ["8080:80"]            # strona: http://localhost:8080
+    ports: ["8080:80"]
 
   sensor:
     build: ./sensor
     environment:
-      - BACKEND_URL=http://backend:8000   # nazwa usługi = nazwa w DNS
-    depends_on: [backend]         # start po backendzie
+      - BACKEND_URL=http://backend:8000
+    depends_on: [backend]
+
+  db:
+    image: postgres:16-alpine     # obraz z półki
+    environment:
+      - POSTGRES_USER=stacja
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?brak pliku .env}   # z pliku .env
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:                  # jak Docker sprawdza, że baza przyjmuje połączenia
+      test: ["CMD", "pg_isready", "-U", "stacja"]
+      interval: 2s
+
+volumes:
+  pgdata:                         # wolumen nazwany: dane przeżyją usunięcie kontenera
